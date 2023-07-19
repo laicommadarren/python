@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Recipe Share</title>
+</head>
+<body>
+    <div class="container">
+        <div style="display:flex; justify-content:space-between">
+            <h1>Edit {{recipe.name}}</h1>
+            <div>
+                <a style="margin-right:20px" href="/dashboard">back to recipes</a>
+                <a href="/logout">logout</a>
+            </div>
+        </div>
+        <form action="/recipes/update" method="POST">
+            <input type="hidden" name="id" value={{recipe.id}}> <!-- id = session["user.id"]-->
+            <p>{{id}}</p>
+            {% with messages = get_flashed_messages(category_filter=none) %}
+            {% if messages %}
+            <h5>Error message:</h5>
+            <ul class=flashes>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            <div class="row">
+                <div class="col-5">
+                    <div class="mb-4">
+                        <label for="name">Name:</label>
+                        <input type="text" name="name" class="form-control" value="{{recipe.name}}">
+                    </div>
+                    <div class="mb-4">
+                        <label for="description">Description:</label>
+                        <textarea name="description" rows="4" class="form-control">{{recipe.description}}</textarea>
+                    </div>
+                    <div>
+                            <label for="recipe">Instructions:</label>
+                            <textarea name="recipe" rows="4" class="form-control">{{recipe.recipe}}</textarea>
+                    </div>
+                </div>
+                <div class="col-2">
+                </div>
+                <div class="col-5">
+                    <div class="mb-4">
+                        <label for="datecookedmade">Date Cooked/Made:</label>
+                        <input type="date" name="datecookedmade" value="{{recipe.datecookedmade.strftime('%Y-%d-%m')}}" class="form-control">
+                        <!-- {{recipe.datecookedmade.strftime("%Y-%d-%m")}} -->
+                    </div>
+                    <div class="mb-4">
+                        <label for="underthirtymin">Under 30 minutes?</label>
+                        {% if recipe.underthirtymin == "yes":  %}
+                            <input type="radio" id="yes" name="underthirtymin" value="yes" checked>
+                            <label for="yes">yes</label>
+                            <input type="radio" id="no" name="underthirtymin" value="no">
+                            <label for="no">no</label>
+                        {% else %}
+                            <input type="radio" id="yes" name="underthirtymin" value="yes">
+                            <label for="yes">yes</label>
+                            <input type="radio" id="no" name="underthirtymin" value="no" checked>
+                            <label for="no">no</label>
+                        {% endif %}
+                    </div>
+                    <div style="display: flex; justify-content:center">
+                        <input type="submit" value="Submit" class="submit">
+                    </div>
+                </div>   
+            </div>
+        </form>
+    </div>
+</body>
+</html>
